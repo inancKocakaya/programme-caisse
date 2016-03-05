@@ -1,0 +1,12 @@
+alter table SALE_DETAILS drop constraint FK_arq2wa7633rry83i4wekijf70 if exists;
+alter table SALE_DETAILS drop constraint FK_ecfsopqw3qawgoicilye5v693 if exists;
+alter table USER_ROLE drop constraint FK_oqmdk7xj0ainhxpvi79fkaq3y if exists;
+alter table USER_ROLE drop constraint FK_j2j8kpywaghe8i36swcxv8784 if exists;
+drop table CB_RECOLTE if exists;
+drop table MONEY_TYPE if exists;
+drop table ROLE if exists;
+drop table SALE_DATA if exists;
+drop table SALE_DETAILS if exists;
+drop table SERVER if exists;
+drop table USER if exists;
+drop table USER_ROLE if exists;

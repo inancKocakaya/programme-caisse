@@ -19,11 +19,11 @@ public class UIUtils {
 	}
 	return invalidComponents;
     }
-    
-    public static List<JTextComponent> checkIsNumeric(JTextComponent... components){
+
+    public static List<JTextComponent> checkIsNumeric(JTextComponent... components) {
 	List<JTextComponent> invalidComponents = new ArrayList<>();
-	for (JTextComponent component : components){
-	    if (!ValidatorUtils.validateIsNumericWithFrenchFormat(component.getText())){
+	for (JTextComponent component : components) {
+	    if (!ValidatorUtils.validateIsNumericWithFrenchFormat(component.getText())) {
 		invalidComponents.add(component);
 	    }
 	}
@@ -33,13 +33,13 @@ public class UIUtils {
     public static Color classicGrayColorForCalculatedValue() {
 	return new Color(224, 224, 224);
     }
-    
-    public static Color colorByAmount(Double amount){
-	if (amount < 0){
+
+    public static Color colorByAmount(Double amount) {
+	if (amount < 0) {
 	    return Color.RED;
 	} else if (amount == 0) {
 	    return Color.BLACK;
-	} else{
+	} else {
 	    return Color.BLUE;
 	}
     }

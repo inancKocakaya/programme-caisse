@@ -213,11 +213,11 @@ public class DailySalesService {
 
     private List<String[]> defaultDataForEspecesTable() {
 	List<String[]> data = new ArrayList<>();
-	for (int i = 0; i < EspecesUtils.SUPPORTED_ESPECES_TYPE.length; i++) {
+	for (int i = 0; i < EspecesUtils.SUPPORTED_ESPECES_AMOUNT.length; i++) {
 	    String[] row = new String[4];
 	    row[0] = null;
 	    row[1] = "0";
-	    row[2] = EspecesUtils.SUPPORTED_ESPECES_TYPE[i];
+	    row[2] = EspecesUtils.SUPPORTED_ESPECES_AMOUNT[i];
 	    row[3] = null;
 	    data.add(row);
 	}

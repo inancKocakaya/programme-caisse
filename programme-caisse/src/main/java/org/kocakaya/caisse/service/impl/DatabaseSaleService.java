@@ -221,26 +221,25 @@ public class DatabaseSaleService implements SaleService {
 	for (int i = 0; i < daysArray.length; i++) {
 	    String[] row = new String[4];
 	    row[0] = daysArray[i];
-	    
+
 	    Date date = DateUtils.stringToDate(row[0]);
 	    Object cbSalesAmount = caisseDao.cbSalesByDate(row[0]).get(0);
-	    if (cbSalesAmount == null){
+	    if (cbSalesAmount == null) {
 		cbSalesAmount = 0;
 	    }
 	    Double value = DoubleUtils.stringToDouble(cbSalesAmount.toString());
 	    row[1] = DoubleUtils.doubleToString(value);
-	    
+
 	    Double recoltedAmount = caisseDao.cbRecolteByDate(date).getAmount();
 	    row[2] = DoubleUtils.doubleToString(recoltedAmount);
-	   
+
 	    row[3] = DoubleUtils.doubleToString(delta(DoubleUtils.stringToDouble(row[2]), DoubleUtils.stringToDouble(row[1])));
-	
+
 	    data.add(row);
 	}
 	return data;
-	
     }
-    
+
     private String[] daysOfCurrentMonth() {
 	Calendar cal = Calendar.getInstance();
 	int nbOfDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);

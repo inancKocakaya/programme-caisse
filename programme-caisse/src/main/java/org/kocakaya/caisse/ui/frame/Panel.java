@@ -5,5 +5,4 @@ import javax.swing.JPanel;
 public interface Panel {
     
     public JPanel get();
-
 }

@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MonthUtils {
-    
+
     private static final Map<Integer, String> FR_MONTH_NAME_BY_INDEX = new HashMap<>();
+
     static {
 	FR_MONTH_NAME_BY_INDEX.put(1, "Janvier");
 	FR_MONTH_NAME_BY_INDEX.put(2, "Février");
@@ -20,8 +21,8 @@ public class MonthUtils {
 	FR_MONTH_NAME_BY_INDEX.put(11, "Novembre");
 	FR_MONTH_NAME_BY_INDEX.put(12, "Décembre");
     }
-    
-    public static String getFrenchMonthNameByIndex(int monthIndex){
+
+    public static String getFrenchMonthNameByIndex(int monthIndex) {
 	return FR_MONTH_NAME_BY_INDEX.get(monthIndex);
     }
 }

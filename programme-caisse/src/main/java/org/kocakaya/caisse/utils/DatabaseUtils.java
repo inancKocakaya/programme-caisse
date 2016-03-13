@@ -96,7 +96,7 @@ public class DatabaseUtils {
 	User user3 = new User(user3Login, encryptedUser3Password);
 
 	caisseDao.addUser(user3);
-	
+
 	String user4Login = "Fmeyfeldt";
 	String user4Password = "impasse";
 

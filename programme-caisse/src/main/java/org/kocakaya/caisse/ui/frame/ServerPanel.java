@@ -197,6 +197,7 @@ public class ServerPanel extends JPanel implements Panel {
 	    
 	    LOGGER.debug("Missing data, server cannot be created");
 	} else {
+	    // TODO Dozer
 	    ServerDTO serverDTO = ServerDTOAssembler.serverDTO(txtLastName.getText(), txtFirstname.getText());
 	    ApplicationManager.getServerService().saveServer(serverDTO);
 	    LOGGER.info("Server : {}-{} created", serverDTO.getServer().getLastName(), serverDTO.getServer().getFirstName());
@@ -214,6 +215,7 @@ public class ServerPanel extends JPanel implements Panel {
     }
 
     private void manageServersUpdate() {
+	// TODO Dozer
 	for (String[] row : servers.getData()) {
 	    Server server = new Server();
 	    server.setId(Integer.parseInt(row[0]));

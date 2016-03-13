@@ -10,17 +10,15 @@ import lombok.Data;
 
 @Data
 public class DailySalesDTOAssembler {
-    
-    public static DailySalesDTO dailySalesDTO(SaleData saleData){
+
+    public static DailySalesDTO dailySalesDTO(SaleData saleData) {
 	return dailySalesDTO(saleData, null, null, null, null, null);
     }
 
-    public static DailySalesDTO dailySalesDTO(SaleData saleData, List<Sale> salesByEspeces,
-	    List<Sale> salesByBonDeCommande, List<Sale> salesByChequeBancaire, List<Sale> salesByTicketRestaurant,
-	    List<Sale> salesByCarteBancaire) {
+    public static DailySalesDTO dailySalesDTO(SaleData saleData, List<Sale> salesByEspeces, List<Sale> salesByBonDeCommande, List<Sale> salesByChequeBancaire, List<Sale> salesByTicketRestaurant, List<Sale> salesByCarteBancaire) {
 
 	DailySalesDTO dailySalesDTO = new DailySalesDTO();
-	
+
 	dailySalesDTO.setSaleData(saleData);
 	dailySalesDTO.setSalesByEspeces(salesByEspeces);
 	dailySalesDTO.setSalesByBonDeCommande(salesByBonDeCommande);

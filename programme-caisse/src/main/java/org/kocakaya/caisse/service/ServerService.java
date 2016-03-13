@@ -11,6 +11,5 @@ public interface ServerService {
     
     public void updateServer(ServerDTO serverDTO);
     
-    public List<Server> servers();
-    
+    public List<Server> servers(); 
 }

@@ -57,7 +57,7 @@ public class WelcomePanel extends JPanel implements Panel {
     JLabel lblImage;
 
     JComboBox<String> users;
-    
+
     JPasswordField txtPassword;
 
     JButton btnConnection;
@@ -78,9 +78,9 @@ public class WelcomePanel extends JPanel implements Panel {
 	lblPassword = new JLabel(resourceBundle.getString("programme.caisse.connection.password.lbl") + " : ");
 
 	users = new JComboBox<>(users());
-	
+
 	txtPassword = new JPasswordField(10);
-	
+
 	ImageIcon imageConnection = new ImageIcon(getClass().getClassLoader().getResource("validate.png"));
 	btnConnection = new JButton(resourceBundle.getString("programme.caisse.connection.validate.lbl"), imageConnection);
 
@@ -172,7 +172,7 @@ public class WelcomePanel extends JPanel implements Panel {
 	    String encryptedPassword;
 	    try {
 		encryptedPassword = CryptoUtils.getMD5EncryptedPassword(txtPassword.getPassword());
-		if (users.getSelectedItem() != null){
+		if (users.getSelectedItem() != null) {
 		    userLogin = users.getSelectedItem().toString();
 		}
 		UserDTO userDTO = UserDTOAssembler.userDTO(userLogin, encryptedPassword);

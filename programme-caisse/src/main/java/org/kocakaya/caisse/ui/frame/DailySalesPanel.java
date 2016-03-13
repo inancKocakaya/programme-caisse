@@ -48,6 +48,8 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class DailySalesPanel extends JPanel implements Panel {
+    
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DailySalesPanel.class);
 
@@ -71,7 +73,6 @@ public class DailySalesPanel extends JPanel implements Panel {
 
     private boolean isPanelLocked = false;
 
-    private static final long serialVersionUID = 1L;
 
     private DailySalesDTO dailySalesDTO;
     private Server server;
@@ -530,6 +531,7 @@ public class DailySalesPanel extends JPanel implements Panel {
     }
 
     private void saveOrUpdateData() {
+	// TODO Dozer
 	SaleData saleData = new SaleData();
 	saleData.setId(new SaleId(dateOperation, server.getId()));
 	saleData.setLocked(false);
@@ -650,8 +652,8 @@ public class DailySalesPanel extends JPanel implements Panel {
 	}
     }
 
+    // TODO Sortir dans une classe
     private void calculateValues() {
-
 	Double txtAmountWithout10Taxes = (DoubleUtils.stringToDouble(txtAmountWith10PercentTaxes.getText()) / 1.10);
 	Double txtAmountWithout20Taxes = (DoubleUtils.stringToDouble(txtAmountWith20PercentTaxes.getText()) / 1.20);
 
@@ -680,6 +682,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 	calculateDiffField(totalAmount);
     }
 
+    // TODO Sortir dans une classe
     private void calculateDiffField(Double totalAmount) {
 	Double [] valuesToAdd = new Double[5];
 	
@@ -697,6 +700,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 	txtAmountDifferencies.setForeground(UIUtils.colorByAmount(amountWithDiff));
     }
 
+    // TODO Sortir dans une classe
     private void calculateTableValues() {
 	// TR
 	for (String[] row : salesByTicketRestaurant.getData()) {

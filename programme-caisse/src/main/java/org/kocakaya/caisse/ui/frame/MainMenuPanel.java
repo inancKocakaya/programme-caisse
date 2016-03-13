@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,7 +17,6 @@ import javax.swing.JScrollPane;
 
 import org.kocakaya.caisse.business.CbRecolte;
 import org.kocakaya.caisse.business.MoneyType;
-import org.kocakaya.caisse.business.Role;
 import org.kocakaya.caisse.business.Server;
 import org.kocakaya.caisse.service.ResourcesLoader;
 import org.kocakaya.caisse.service.dto.DailySalesDTO;
@@ -50,9 +48,9 @@ public class MainMenuPanel extends JPanel implements Panel {
     private static final Logger LOGGER = LoggerFactory.getLogger(MainMenuPanel.class);
 
     private ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
-    
-    DecimalFormat mFormat= new DecimalFormat("00");
-    
+
+    DecimalFormat mFormat = new DecimalFormat("00");
+
     private String periodText = resourceBundle.getString("programme.caisse.period.lbl");
     private String caHtText = resourceBundle.getString("programme.caisse.caht.lbl");
     private String caTtcText = resourceBundle.getString("programme.caisse.cattc.lbl");
@@ -64,9 +62,9 @@ public class MainMenuPanel extends JPanel implements Panel {
     private String computedAmountText = resourceBundle.getString("programme.caisse.computed.amount.lbl");
     private String collectedAmountText = resourceBundle.getString("programme.caisse.collected.amount.lbl");
     private String deltaText = resourceBundle.getString("programme.caisse.delta.lbl");
-    
+
     String messageFailNoServerSelected = resourceBundle.getString("programme.caisse.no.server.selected.lbl");
-    String messageSuccessDataSaved = resourceBundle.getString("programme.caisse.success.save.lbl"); 
+    String messageSuccessDataSaved = resourceBundle.getString("programme.caisse.success.save.lbl");
 
     String title = resourceBundle.getString("programme.caisse.mainmenu.title.lbl");
 
@@ -76,16 +74,16 @@ public class MainMenuPanel extends JPanel implements Panel {
     private List<String[]> dataForSalesStats = new ArrayList<>();
 
     private String[] columnsForTrStats = { periodText.toUpperCase(), numberText.toUpperCase(), sumText.toUpperCase() };
-    
+
     private List<String[]> dataForTrStats = new ArrayList<>();
-    
+
     private List<String[]> dataForCumulCB = new ArrayList<>();
 
     private String[] columnsForCumulTr = { numberText.toUpperCase(), sumText.toUpperCase() };
 
     private String[] columnsForDetailsTr = { numberText.toUpperCase(), amountText.toUpperCase() };
-    
-    private String[] columnsForCumulCB = {periodText.toUpperCase(), computedAmountText.toUpperCase() , collectedAmountText.toUpperCase(), deltaText.toUpperCase()};
+
+    private String[] columnsForCumulCB = { periodText.toUpperCase(), computedAmountText.toUpperCase(), collectedAmountText.toUpperCase(), deltaText.toUpperCase() };
 
     private UtilDateModel model;
     private JDatePanelImpl datePanel;
@@ -105,13 +103,13 @@ public class MainMenuPanel extends JPanel implements Panel {
 
     private JButton btnTRJour;
     private JButton btnCumulTR;
-    
+
     private JButton btnServersManagement;
 
     private JButton btnDetails;
-    
+
     private JButton btnCumulCB;
-    
+
     private JButton btnSaveRecolteCB;
 
     MyDefaultModelTable stats;
@@ -121,7 +119,7 @@ public class MainMenuPanel extends JPanel implements Panel {
     MyDefaultModelTable tickets;
     MyStatsTable ticketsTable;
     JScrollPane scrollPaneTicketsTable;
-    
+
     MyDefaultModelTableCumulCB cumulCB;
     MyCumulCBTable cumulCBTable;
     JScrollPane scrollPaneCumulCBTable;
@@ -152,10 +150,10 @@ public class MainMenuPanel extends JPanel implements Panel {
 	btnYearSales = new JButton(resourceBundle.getString("programme.caisse.year.lbl").toUpperCase(), imageIconStats);
 
 	btnTRJour = new JButton(resourceBundle.getString("programme.caisse.ticket.day.lbl").toUpperCase(), imageIconStats);
-	
+
 	btnCumulCB = new JButton(resourceBundle.getString("programme.caisse.cumul.cb.lbl").toUpperCase(), imageIconStats);
-	
-	ImageIcon imageIconSave = new ImageIcon(getClass().getClassLoader().getResource("floppy.png"));		
+
+	ImageIcon imageIconSave = new ImageIcon(getClass().getClassLoader().getResource("floppy.png"));
 	btnSaveRecolteCB = new JButton(resourceBundle.getString("programme.caisse.save.lbl"), imageIconSave);
 
 	ImageIcon imageIconServers = new ImageIcon(getClass().getClassLoader().getResource("servers.png"));
@@ -164,10 +162,10 @@ public class MainMenuPanel extends JPanel implements Panel {
 	servers = new JComboBox<>(servers());
 
 	model = new UtilDateModel();
-	
+
 	Date bufferedDate = ApplicationManager.getConnectedUser().getSelectedDate();
-	
-	model.setDate(year(bufferedDate), month(bufferedDate), day(bufferedDate));
+
+	model.setDate(DateUtils.year(bufferedDate), DateUtils.month(bufferedDate), DateUtils.day(bufferedDate));
 	model.setSelected(true);
 	datePanel = new JDatePanelImpl(model);
 	datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
@@ -179,7 +177,7 @@ public class MainMenuPanel extends JPanel implements Panel {
 	tickets = new MyDefaultModelTable(dataForTrStats, columnsForTrStats, MoneyType.ALL, false);
 	ticketsTable = new MyStatsTable(tickets, MyStatsTable.TR_JOUR);
 	scrollPaneTicketsTable = new JScrollPane(ticketsTable);
-	
+
 	cumulCB = new MyDefaultModelTableCumulCB(dataForCumulCB, columnsForCumulCB);
 	cumulCBTable = new MyCumulCBTable(cumulCB);
 	scrollPaneCumulCBTable = new JScrollPane(cumulCBTable);
@@ -209,7 +207,7 @@ public class MainMenuPanel extends JPanel implements Panel {
 	builder.add(servers, cc.xy(8, 7));
 	builder.add(btnNewSale, cc.xy(10, 7));
 
-	if (ApplicationManager.getConnectedUser().getUser().getRoles().contains(Role.ROLE_ADMIN) || ApplicationManager.getConnectedUser().getUser().getRoles().contains(Role.ROLE_VISU_TR)) {
+	if (ApplicationManager.getConnectedUser().hasRoleAdmin() || ApplicationManager.getConnectedUser().hasRoleVisuTr()) {
 
 	    builder.add(btnDaySales, cc.xy(12, 5));
 	    builder.add(btnMonthSales, cc.xy(14, 5));
@@ -220,13 +218,13 @@ public class MainMenuPanel extends JPanel implements Panel {
 
 	    builder.addSeparator(statsText.toUpperCase(), cc.xyw(12, 9, 6));
 	    builder.add(scrollPaneStatsTable, cc.xyw(12, 11, 6));
-	    
+
 	    builder.add(scrollPaneCumulCBTable, cc.xyw(12, 11, 6));
-	    
+
 	    scrollPaneCumulCBTable.setVisible(false);
 	}
 
-	if (ApplicationManager.getConnectedUser().getUser().getRoles().contains(Role.ROLE_ADMIN)) {
+	if (ApplicationManager.getConnectedUser().hasRoleAdmin()) {
 	    builder.add(btnServersManagement, cc.xy(18, 5));
 	}
 
@@ -236,9 +234,9 @@ public class MainMenuPanel extends JPanel implements Panel {
 
 	builder.add(btnDetails, cc.xywh(18, 8, 1, 2));
 	btnDetails.setVisible(false);
-	
+
 	builder.add(btnSaveRecolteCB, cc.xywh(18, 8, 1, 2));
-	
+
 	btnSaveRecolteCB.setVisible(false);
 
 	initButtons();
@@ -367,7 +365,7 @@ public class MainMenuPanel extends JPanel implements Panel {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		List<CbRecolte> cbRecoltes = new ArrayList<>();
-		for (String[] array : cumulCB.getData()){
+		for (String[] array : cumulCB.getData()) {
 		    CbRecolte cbRecolte = new CbRecolte();
 		    cbRecolte.setDateOperation(DateUtils.stringToDate(array[0]));
 		    cbRecolte.setAmount(DoubleUtils.stringToDouble(array[2]));
@@ -405,12 +403,7 @@ public class MainMenuPanel extends JPanel implements Panel {
     }
 
     private List<String[]> dataForYearSales() {
-	Date currentDate = new Date();
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(currentDate);
-	int year = cal.get(Calendar.YEAR);
-	String yearAsString = String.valueOf(year);
-	List<String[]> data = ApplicationManager.getSaleService().salesByYear(yearAsString);
+	List<String[]> data = ApplicationManager.getSaleService().salesByYear(String.valueOf(DateUtils.year(new Date())));
 	return data;
     }
 
@@ -434,34 +427,19 @@ public class MainMenuPanel extends JPanel implements Panel {
 	List<String[]> data = ApplicationManager.getSaleService().detailsForCumulTickets(currentMonthWithAppropriateIndex());
 	return data;
     }
-    
-    private List<String[]> dataDetailsForCumulCb(){
+
+    private List<String[]> dataDetailsForCumulCb() {
 	List<String[]> data = ApplicationManager.getSaleService().detailsForCumulCB();
 	return data;
     }
 
     private String currentMonthWithAppropriateIndex() {
-	Date currentDate = new Date();
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(currentDate);
-	int month = cal.get(Calendar.MONTH);
-	String monthNumberAsMonth = mFormat.format(Double.valueOf(month + 1));
-	return monthNumberAsMonth;
+	return DateUtils.monthOfCurrentDateWithIncrementedStartedIndex();
+	// Date currentDate = new Date();
+	// Calendar cal = Calendar.getInstance();
+	// cal.setTime(currentDate);
+	// int month = cal.get(Calendar.MONTH);
+	// String monthNumberAsMonth = mFormat.format(Double.valueOf(month + 1));
+	// return monthNumberAsMonth;
     }
-    
-    private Calendar calendar(Date date){
-	return DateUtils.dateToCalendar(date);
-    }
-    
-    private int year(Date date){
-	return calendar(date).get(Calendar.YEAR);
-    }
-    
-    private int month(Date date){
-	return calendar(date).get(Calendar.MONTH);
-    }
-    
-    private int day(Date date){
-   	return calendar(date).get(Calendar.DAY_OF_MONTH);
-       }
 }

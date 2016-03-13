@@ -40,4 +40,9 @@ public class DatabaseUserService implements UserService {
     public CaisseDao caisseDao() {
 	return caisseDao;
     }
+
+    @Override
+    public UserDTO userDTO(User user) {
+	return null;
+    }
 }

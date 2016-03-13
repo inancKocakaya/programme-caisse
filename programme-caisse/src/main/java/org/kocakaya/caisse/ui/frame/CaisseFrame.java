@@ -12,7 +12,6 @@ public class CaisseFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
     public CaisseFrame() {
-
 	initApplication(DaoType.DATABASE);
     }
 

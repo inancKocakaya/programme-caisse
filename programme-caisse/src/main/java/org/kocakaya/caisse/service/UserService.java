@@ -2,6 +2,7 @@ package org.kocakaya.caisse.service;
 
 import java.util.List;
 
+import org.kocakaya.caisse.business.User;
 import org.kocakaya.caisse.dao.CaisseDao;
 import org.kocakaya.caisse.service.dto.UserDTO;
 
@@ -14,4 +15,6 @@ public interface UserService {
     public List<String> usersLogin();
     
     public CaisseDao caisseDao();
+    
+    public UserDTO userDTO(User user);
 }

@@ -9,29 +9,29 @@ import java.util.Date;
 
 public class DateUtils {
 
-    private static Calendar NOW = Calendar.getInstance();
+    Calendar NOW = Calendar.getInstance();
 
     private static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("00");
 
     private static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
-    public static int yearOfCurrentDate() {
+    public DateUtils() {
+    }
+
+    public int yearOfCurrentDate() {
 	return NOW.get(Calendar.YEAR);
     }
 
-    public static String monthOfCurrentDateWithStandardStartIndex() {
-	int indexMonth = NOW.get(Calendar.MONTH);
-	String month = DECIMAL_FORMAT.format(indexMonth);
-	return month;
+    public String monthOfCurrentDateWithStandardStartIndex() {
+	return DECIMAL_FORMAT.format(NOW.get(Calendar.MONTH));
     }
 
-    public static String monthOfCurrentDateWithIncrementedStartedIndex() {
+    public String monthOfCurrentDateWithIncrementedStartedIndex() {
 	int month = Integer.parseInt(monthOfCurrentDateWithStandardStartIndex()) + 1;
-	String result = DECIMAL_FORMAT.format(month);
-	return result;
+	return DECIMAL_FORMAT.format(month);
     }
 
-    public static int dayOfCurrentDate() {
+    public int dayOfCurrentDate() {
 	return NOW.get(Calendar.DAY_OF_MONTH);
     }
 

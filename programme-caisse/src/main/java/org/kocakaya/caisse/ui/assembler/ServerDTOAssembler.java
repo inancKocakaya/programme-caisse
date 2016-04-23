@@ -4,6 +4,9 @@ import org.kocakaya.caisse.business.Server;
 import org.kocakaya.caisse.service.dto.ServerDTO;
 
 public class ServerDTOAssembler {
+    
+    private ServerDTOAssembler(){
+    }
 
     public static ServerDTO serverDTO(Integer id, String lastName, String firstName) {
 	ServerDTO serverDTO = new ServerDTO();

@@ -17,14 +17,16 @@ import org.kocakaya.caisse.utils.DateUtils;
 import org.kocakaya.caisse.utils.DoubleUtils;
 import org.kocakaya.caisse.utils.MonthUtils;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class DatabaseSaleService implements SaleService {
 
     private CaisseDao caisseDao;
+
+    private DateUtils dateUtils = new DateUtils();
+
+    public DatabaseSaleService(CaisseDao caisseDao) {
+	super();
+	this.caisseDao = caisseDao;
+    }
 
     @Override
     public DailySalesDTO salesDetails(Date dateOperation, Server server) {
@@ -259,7 +261,7 @@ public class DatabaseSaleService implements SaleService {
 
     @Override
     public void saveCbRecolte(List<CbRecolte> cbRecoltes) {
-	String month = DateUtils.monthOfCurrentDateWithIncrementedStartedIndex();
+	String month = dateUtils.monthOfCurrentDateWithIncrementedStartedIndex();
 	deleteCbRecolteOfCurrentMonth(month);
 	for (CbRecolte cbRecolte : cbRecoltes) {
 	    caisseDao.saveCbRecolte(cbRecolte);

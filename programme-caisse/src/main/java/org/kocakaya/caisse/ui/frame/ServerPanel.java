@@ -40,7 +40,7 @@ public class ServerPanel extends JPanel implements Panel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerPanel.class);
 
-    private ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
+    private static ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
 
     String messageSuccessSave = resourceBundle.getString("programme.caisse.success.save.lbl");
     String messageFailMissingData = resourceBundle.getString("programme.caisse.fail.missing.data.lbl");
@@ -69,6 +69,7 @@ public class ServerPanel extends JPanel implements Panel {
     JScrollPane scrollPaneServersTable;
 
     public ServerPanel() {
+	super();
     }
 
     @Override
@@ -166,7 +167,7 @@ public class ServerPanel extends JPanel implements Panel {
 	btnBackMainMenu.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		ApplicationManager.changePanel(new MainMenuPanel().get());
+		Application.changePanel(new MainMenuPanel().get());
 	    }
 	});
     }
@@ -199,7 +200,7 @@ public class ServerPanel extends JPanel implements Panel {
 	} else {
 	    // TODO Dozer
 	    ServerDTO serverDTO = ServerDTOAssembler.serverDTO(txtLastName.getText(), txtFirstname.getText());
-	    ApplicationManager.getServerService().saveServer(serverDTO);
+	    Application.getServerService().saveServer(serverDTO);
 	    LOGGER.info("Server : {}-{} created", serverDTO.getServer().getLastName(), serverDTO.getServer().getFirstName());
 	    
 	    StateMessageLabelBuilder.create().withLabel(lblMessage)
@@ -222,7 +223,7 @@ public class ServerPanel extends JPanel implements Panel {
 	    server.setLastName(row[1]);
 	    server.setFirstName(row[2]);
 	    ServerDTO serverDTO = new ServerDTO(server);
-	    ApplicationManager.getServerService().updateServer(serverDTO);
+	    Application.getServerService().updateServer(serverDTO);
 	    LOGGER.debug("Server : {}-{} updated", row[1], row[2]);
 	    
 	    StateMessageLabelBuilder.create().withLabel(lblMessage)
@@ -234,9 +235,9 @@ public class ServerPanel extends JPanel implements Panel {
     }
 
     private List<String[]> getServersAsTable() {
-	List<Server> servers = ApplicationManager.getServerService().servers();
+	List<Server> serversList = Application.getServerService().servers();
 	List<String[]> result = new ArrayList<>();
-	for (Server server : servers) {
+	for (Server server : serversList) {
 	    result.add(new String[] { String.valueOf(server.getId()), server.getLastName(), server.getFirstName() });
 	}
 	return result;

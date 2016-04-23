@@ -11,24 +11,41 @@ import javax.swing.table.AbstractTableModel;
 
 import org.kocakaya.caisse.business.MoneyType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-@AllArgsConstructor
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class MyDefaultModelTable extends AbstractTableModel {
 
     private static final long serialVersionUID = 1L;
 
-    protected List<String[]> data;
+    private List<String[]> data;
     protected String[] columnsName;
     protected MoneyType moneyType;
     protected boolean isAllLocked;
 
     public MyDefaultModelTable() {
 	super();
+    }
+
+    public MyDefaultModelTable(List<String[]> data, String[] columnsName, MoneyType moneyType, boolean isAllLocked) {
+	super();
+	this.data = data;
+	this.columnsName = columnsName;
+	this.moneyType = moneyType;
+	this.isAllLocked = isAllLocked;
+    }
+
+    public MoneyType getMoneyType() {
+	return moneyType;
+    }
+
+    public void setMoneyType(MoneyType moneyType) {
+	this.moneyType = moneyType;
+    }
+
+    public boolean isAllLocked() {
+	return isAllLocked;
+    }
+
+    public void setAllLocked(boolean isAllLocked) {
+	this.isAllLocked = isAllLocked;
     }
 
     @Override
@@ -41,13 +58,14 @@ public class MyDefaultModelTable extends AbstractTableModel {
 	return data.get(row)[column];
     }
 
+    @Override
     public int getRowCount() {
 	return data.size();
     }
 
     @Override
     public String getColumnName(int col) {
-	return columnsName[col].toString();
+	return columnsName[col];
     }
 
     @Override

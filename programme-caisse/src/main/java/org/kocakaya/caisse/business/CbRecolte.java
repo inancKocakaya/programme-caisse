@@ -12,13 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "CB_RECOLTE")
 public class CbRecolte implements Serializable {
@@ -29,9 +22,46 @@ public class CbRecolte implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+
     @Column(name = "DATE_OPERATION")
     @Temporal(TemporalType.DATE)
     private Date dateOperation;
+
     @Column(name = "AMOUNT")
     private double amount;
+
+    public CbRecolte() {
+	super();
+    }
+
+    public CbRecolte(Integer id, Date dateOperation, double amount) {
+	super();
+	this.id = id;
+	this.dateOperation = dateOperation;
+	this.amount = amount;
+    }
+
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
+    public Date getDateOperation() {
+	return dateOperation;
+    }
+
+    public void setDateOperation(Date dateOperation) {
+	this.dateOperation = dateOperation;
+    }
+
+    public double getAmount() {
+	return amount;
+    }
+
+    public void setAmount(double amount) {
+	this.amount = amount;
+    }
 }

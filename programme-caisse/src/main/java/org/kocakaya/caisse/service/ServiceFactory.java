@@ -7,6 +7,9 @@ import org.kocakaya.caisse.service.impl.DatabaseUserService;
 
 public class ServiceFactory {
 
+    private ServiceFactory() {
+    }
+
     public static UserService getUserService(DaoType daoType) {
 	if (DaoType.DATABASE.equals(daoType)) {
 	    return new DatabaseUserService(new DatabaseCaisseDaoImpl());

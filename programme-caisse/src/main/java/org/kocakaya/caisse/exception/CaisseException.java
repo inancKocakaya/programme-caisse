@@ -14,7 +14,6 @@ public class CaisseException extends Exception {
 
     public CaisseException(String message, Throwable cause) {
 	super(message, cause);
-	// TODO Auto-generated constructor stub
     }
 
     public CaisseException(String message) {

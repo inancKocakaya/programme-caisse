@@ -7,14 +7,14 @@ import org.kocakaya.caisse.dao.CaisseDao;
 import org.kocakaya.caisse.service.UserService;
 import org.kocakaya.caisse.service.dto.UserDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class DatabaseUserService implements UserService {
 
     private CaisseDao caisseDao;
+
+    public DatabaseUserService(CaisseDao caisseDao) {
+	super();
+	this.caisseDao = caisseDao;
+    }
 
     @Override
     public UserDTO findUserWithRoles(UserDTO userDTO) {
@@ -29,11 +29,10 @@ public class DatabaseUserService implements UserService {
 	User user = caisseDao.findAdminUser();
 	return user.getPassword();
     }
-    
+
     @Override
     public List<String> usersLogin() {
-	List<String> usersLogin = caisseDao.usersLogin();
-	return usersLogin;
+	return caisseDao.usersLogin();
     }
 
     @Override

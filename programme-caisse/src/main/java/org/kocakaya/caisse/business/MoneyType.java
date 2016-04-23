@@ -7,15 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder(builderMethodName = "create", buildMethodName = "get")
 @Table(name = "MONEY_TYPE")
 public class MoneyType implements Serializable {
@@ -32,6 +26,17 @@ public class MoneyType implements Serializable {
     @Id
     @Column(name = "CODE", nullable = false)
     private String code;
+
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public MoneyType() {
+	super();
+    }
+
+    public MoneyType(String code, String description) {
+	super();
+	this.code = code;
+	this.description = description;
+    }
 }

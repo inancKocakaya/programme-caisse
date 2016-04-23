@@ -47,9 +47,11 @@ public class MainMenuPanel extends JPanel implements Panel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainMenuPanel.class);
 
-    private ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
+    private static ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
 
     DecimalFormat mFormat = new DecimalFormat("00");
+    
+    DateUtils dateUtils = new DateUtils();
 
     private String periodText = resourceBundle.getString("programme.caisse.period.lbl");
     private String caHtText = resourceBundle.getString("programme.caisse.caht.lbl");
@@ -125,6 +127,7 @@ public class MainMenuPanel extends JPanel implements Panel {
     JScrollPane scrollPaneCumulCBTable;
 
     public MainMenuPanel() {
+	super();
     }
 
     @Override
@@ -163,7 +166,7 @@ public class MainMenuPanel extends JPanel implements Panel {
 
 	model = new UtilDateModel();
 
-	Date bufferedDate = ApplicationManager.getConnectedUser().getSelectedDate();
+	Date bufferedDate = Application.getConnectedUser().getSelectedDate();
 
 	model.setDate(DateUtils.year(bufferedDate), DateUtils.month(bufferedDate), DateUtils.day(bufferedDate));
 	model.setSelected(true);
@@ -207,7 +210,7 @@ public class MainMenuPanel extends JPanel implements Panel {
 	builder.add(servers, cc.xy(8, 7));
 	builder.add(btnNewSale, cc.xy(10, 7));
 
-	if (ApplicationManager.getConnectedUser().hasRoleAdmin() || ApplicationManager.getConnectedUser().hasRoleVisuTr()) {
+	if (Application.getConnectedUser().hasRoleAdmin() || Application.getConnectedUser().hasRoleVisuTr()) {
 
 	    builder.add(btnDaySales, cc.xy(12, 5));
 	    builder.add(btnMonthSales, cc.xy(14, 5));
@@ -224,7 +227,7 @@ public class MainMenuPanel extends JPanel implements Panel {
 	    scrollPaneCumulCBTable.setVisible(false);
 	}
 
-	if (ApplicationManager.getConnectedUser().hasRoleAdmin()) {
+	if (Application.getConnectedUser().hasRoleAdmin()) {
 	    builder.add(btnServersManagement, cc.xy(18, 5));
 	}
 
@@ -251,12 +254,12 @@ public class MainMenuPanel extends JPanel implements Panel {
 		if (servers.getSelectedItem() != null) {
 		    Server server = (Server) servers.getSelectedItem();
 		    Date dateOperation = (Date) datePicker.getModel().getValue();
-		    ApplicationManager.getConnectedUser().setSelectedDate(dateOperation);
-		    DailySalesDTO dailySalesDTO = ApplicationManager.getSaleService().salesDetails(dateOperation, server);
+		    Application.getConnectedUser().setSelectedDate(dateOperation);
+		    DailySalesDTO dailySalesDTO = Application.getSaleService().salesDetails(dateOperation, server);
 		    LOGGER.debug("Found data {}", dailySalesDTO.getSaleData());
 		    LOGGER.info("Selected date {} - server {}", DateUtils.formatDateWithFrenchFormat(dateOperation), server);
-		    ApplicationManager.getConnectedUser().setSelectedDate(dateOperation);
-		    ApplicationManager.changeToDailySalesPanel(server, dateOperation, dailySalesDTO);
+		    Application.getConnectedUser().setSelectedDate(dateOperation);
+		    Application.changeToDailySalesPanel(server, dateOperation, dailySalesDTO);
 		} else {
 		    StateMessageLabelBuilder.create().withLabel(lblMessage).withText(messageFailNoServerSelected).withState(MessageType.FAIL).withVisibilty(true).withVisibilityInSeconds(2_000).start();
 		}
@@ -371,7 +374,7 @@ public class MainMenuPanel extends JPanel implements Panel {
 		    cbRecolte.setAmount(DoubleUtils.stringToDouble(array[2]));
 		    cbRecoltes.add(cbRecolte);
 		}
-		ApplicationManager.getSaleService().saveCbRecolte(cbRecoltes);
+		Application.getSaleService().saveCbRecolte(cbRecoltes);
 		cumulCB.setData(dataDetailsForCumulCb());
 		cumulCB.fireTableDataChanged();
 		StateMessageLabelBuilder.create().withLabel(lblMessage).withText(messageSuccessDataSaved).withState(MessageType.SUCCESS).withVisibilty(true).withVisibilityInSeconds(2_000).start();
@@ -380,66 +383,52 @@ public class MainMenuPanel extends JPanel implements Panel {
 	btnServersManagement.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		ApplicationManager.changePanel(new ServerPanel().get());
+		Application.changePanel(new ServerPanel().get());
 	    }
 	});
     }
 
     private Server[] servers() {
-	List<Server> servers = ApplicationManager.getServerService().servers();
-	return servers.toArray(new Server[servers.size()]);
+	List<Server> serversList = Application.getServerService().servers();
+	return serversList.toArray(new Server[serversList.size()]);
     }
 
     private List<String[]> dataForDaySales() {
 	Date currentDate = new Date();
 	String dateWithFrenchFormat = DateUtils.formatDateWithFrenchFormat(currentDate);
-	List<String[]> data = ApplicationManager.getSaleService().salesByDay(dateWithFrenchFormat);
-	return data;
+	return Application.getSaleService().salesByDay(dateWithFrenchFormat);
     }
 
     private List<String[]> dataForMonthSales() {
-	List<String[]> data = ApplicationManager.getSaleService().salesByMonth(currentMonthWithAppropriateIndex());
-	return data;
+	return Application.getSaleService().salesByMonth(currentMonthWithAppropriateIndex());
     }
 
     private List<String[]> dataForYearSales() {
-	List<String[]> data = ApplicationManager.getSaleService().salesByYear(String.valueOf(DateUtils.year(new Date())));
-	return data;
+	return Application.getSaleService().salesByYear(String.valueOf(DateUtils.year(new Date())));
     }
 
     private List<String[]> dataForTrJour() {
-	List<String[]> data = ApplicationManager.getSaleService().ticketsByJour(currentMonthWithAppropriateIndex());
-	return data;
+	return Application.getSaleService().ticketsByJour(currentMonthWithAppropriateIndex());
     }
 
     private List<String[]> dataForCumulTr() {
-	List<String[]> data = ApplicationManager.getSaleService().ticketsByCumul(currentMonthWithAppropriateIndex());
-	return data;
+	return Application.getSaleService().ticketsByCumul(currentMonthWithAppropriateIndex());
     }
 
     private List<String[]> dataDetailsForTrJour(Date date) {
 	String dateWithFrenchFormat = DateUtils.formatDateWithFrenchFormat(date);
-	List<String[]> data = ApplicationManager.getSaleService().detailsForTicketsJour(dateWithFrenchFormat);
-	return data;
+	return Application.getSaleService().detailsForTicketsJour(dateWithFrenchFormat);
     }
 
     private List<String[]> dataDetailsForCumulTr() {
-	List<String[]> data = ApplicationManager.getSaleService().detailsForCumulTickets(currentMonthWithAppropriateIndex());
-	return data;
+	return Application.getSaleService().detailsForCumulTickets(currentMonthWithAppropriateIndex());
     }
 
     private List<String[]> dataDetailsForCumulCb() {
-	List<String[]> data = ApplicationManager.getSaleService().detailsForCumulCB();
-	return data;
+	return Application.getSaleService().detailsForCumulCB();
     }
 
     private String currentMonthWithAppropriateIndex() {
-	return DateUtils.monthOfCurrentDateWithIncrementedStartedIndex();
-	// Date currentDate = new Date();
-	// Calendar cal = Calendar.getInstance();
-	// cal.setTime(currentDate);
-	// int month = cal.get(Calendar.MONTH);
-	// String monthNumberAsMonth = mFormat.format(Double.valueOf(month + 1));
-	// return monthNumberAsMonth;
+	return dateUtils.monthOfCurrentDateWithIncrementedStartedIndex();
     }
 }

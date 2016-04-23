@@ -4,6 +4,9 @@ import org.kocakaya.caisse.business.User;
 import org.kocakaya.caisse.service.dto.UserDTO;
 
 public class UserDTOAssembler {
+   
+    private UserDTOAssembler(){
+    }
 
     public static UserDTO userDTO(Integer id, String login, String password) {
 	UserDTO userDTO = new UserDTO();

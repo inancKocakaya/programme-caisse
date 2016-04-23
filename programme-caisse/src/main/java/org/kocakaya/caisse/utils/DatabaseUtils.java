@@ -17,9 +17,6 @@ import org.kocakaya.caisse.exception.CaisseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lombok.Data;
-
-@Data
 public class DatabaseUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseUtils.class);
@@ -45,18 +42,20 @@ public class DatabaseUtils {
 
 	    List<User> users = caisseDao.users();
 
-	    if (users == null || users.size() == 0) {
+	    if (users == null || users.isEmpty()) {
 		initUsers();
 	    }
 	    List<MoneyType> moneyTypes = caisseDao.moneyTypes();
 
-	    if (moneyTypes == null || moneyTypes.size() == 0) {
+	    if (moneyTypes == null || moneyTypes.isEmpty()) {
 		initOtherData(connection);
 	    }
 	} catch (Exception e) {
 	    LOGGER.error(e.getMessage());
 	} finally {
-	    connection.close();
+	    if (connection != null) {
+		connection.close();
+	    }
 	}
     }
 

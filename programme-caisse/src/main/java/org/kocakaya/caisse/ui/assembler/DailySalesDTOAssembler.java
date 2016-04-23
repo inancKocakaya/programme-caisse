@@ -6,10 +6,10 @@ import org.kocakaya.caisse.business.Sale;
 import org.kocakaya.caisse.business.SaleData;
 import org.kocakaya.caisse.service.dto.DailySalesDTO;
 
-import lombok.Data;
-
-@Data
 public class DailySalesDTOAssembler {
+    
+    private DailySalesDTOAssembler(){
+    }
 
     public static DailySalesDTO dailySalesDTO(SaleData saleData) {
 	return dailySalesDTO(saleData, null, null, null, null, null);

@@ -6,6 +6,9 @@ public class DoubleUtils {
 
     private static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##.##");
 
+    private DoubleUtils(){
+    }
+    
     public static Double stringToDouble(String s) {
 	Double result = Double.parseDouble(s.replaceAll(",", "."));
 

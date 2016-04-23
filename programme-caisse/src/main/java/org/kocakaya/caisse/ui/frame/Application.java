@@ -19,17 +19,19 @@ import org.kocakaya.caisse.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ApplicationManager {
+public class Application {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationManager.class);
-
-    private static ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private static UserService userService = null;
     private static SaleService saleService = null;
     private static ServerService serverService = null;
     private static CaisseFrame frame = null;
     private static UserDTO connectedUser = null;
+    private static ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
+
+    private Application() {
+    }
 
     public static UserService getUserService() {
 	return userService;
@@ -44,7 +46,7 @@ public class ApplicationManager {
 		}
 	    }
 	} catch (Exception e) {
-	    LOGGER.debug("Error on changing application Look & Feel");
+	    LOGGER.debug("Error on changing application Look & Feel", e);
 	}
 	frame.setTitle(resourceBundle.getString("programme.caisse.title.lbl"));
 	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -56,7 +58,7 @@ public class ApplicationManager {
     }
 
     public static void setUserService(UserService userService) {
-	ApplicationManager.userService = userService;
+	Application.userService = userService;
     }
 
     public static SaleService getSaleService() {
@@ -68,11 +70,11 @@ public class ApplicationManager {
     }
 
     public static void setServerService(ServerService serverService) {
-	ApplicationManager.serverService = serverService;
+	Application.serverService = serverService;
     }
 
     public static void setSaleService(SaleService saleService) {
-	ApplicationManager.saleService = saleService;
+	Application.saleService = saleService;
     }
 
     public static CaisseFrame getFrame() {
@@ -80,7 +82,7 @@ public class ApplicationManager {
     }
 
     public static void setFrame(CaisseFrame frame) {
-	ApplicationManager.frame = frame;
+	Application.frame = frame;
     }
 
     public static UserDTO getConnectedUser() {
@@ -88,7 +90,7 @@ public class ApplicationManager {
     }
 
     public static void setConnectedUser(UserDTO connectedUser) {
-	ApplicationManager.connectedUser = connectedUser;
+	Application.connectedUser = connectedUser;
     }
 
     public static CaisseDao getCaisseDao() {
@@ -97,21 +99,21 @@ public class ApplicationManager {
 
     public static void changePanel(JPanel panel) {
 
-	ApplicationManager.frame.getContentPane().removeAll();
+	Application.frame.getContentPane().removeAll();
 
-	ApplicationManager.frame.setContentPane(panel);
+	Application.frame.setContentPane(panel);
 
-	ApplicationManager.frame.invalidate();
-	ApplicationManager.frame.validate();
-	ApplicationManager.frame.repaint();
+	Application.frame.invalidate();
+	Application.frame.validate();
+	Application.frame.repaint();
     }
 
     public static void changeToDailySalesPanel(Server server, Date dateOperation, DailySalesDTO dailySalesDTO) {
-	ApplicationManager.frame.getContentPane().removeAll();
+	Application.frame.getContentPane().removeAll();
 	frame.setContentPane(new DailySalesPanel(server, dateOperation, dailySalesDTO).get());
 
-	ApplicationManager.frame.invalidate();
-	ApplicationManager.frame.validate();
-	ApplicationManager.frame.repaint();
+	Application.frame.invalidate();
+	Application.frame.validate();
+	Application.frame.repaint();
     }
 }

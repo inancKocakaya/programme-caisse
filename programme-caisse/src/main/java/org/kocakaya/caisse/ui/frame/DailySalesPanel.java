@@ -48,12 +48,12 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class DailySalesPanel extends JPanel implements Panel {
-    
+
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DailySalesPanel.class);
 
-    private ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
+    private static ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
     private DailySalesService dailySalesService;
 
     String messageNotNumericFields = resourceBundle.getString("programme.caisse.fail.notnumeric.lbl");
@@ -72,7 +72,6 @@ public class DailySalesPanel extends JPanel implements Panel {
     String unlockText = resourceBundle.getString("programme.caisse.unlock.lbl");
 
     private boolean isPanelLocked = false;
-
 
     private DailySalesDTO dailySalesDTO;
     private Server server;
@@ -447,7 +446,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 			    try {
 				status = processValidation(password);
 			    } catch (CaisseException e1) {
-				LOGGER.error(e1.getMessage());
+				LOGGER.error("Error on process validation", e1);
 			    }
 			    if (status) {
 				if (dailySalesDTO.getSaleData().isLocked()) {
@@ -475,7 +474,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 	btnBackMainMenu.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		ApplicationManager.changePanel(new MainMenuPanel().get());
+		Application.changePanel(new MainMenuPanel().get());
 	    }
 	});
 
@@ -544,8 +543,8 @@ public class DailySalesPanel extends JPanel implements Panel {
 	saleData.setAmount10Taxes(DoubleUtils.stringToDouble(txtAmountWith10PercentTaxes.getText()));
 	saleData.setAmount20Taxes(DoubleUtils.stringToDouble(txtAmountWith20PercentTaxes.getText()));
 
-	DailySalesDTO dailySalesDTO = DailySalesDTOAssembler.dailySalesDTO(saleData, salesEspeces, salesBonDeCommande, salesCheque, salesTicketRestaurant, salesCarteBancaire);
-	ApplicationManager.getSaleService().saveSales(dailySalesDTO);
+	DailySalesDTO dto = DailySalesDTOAssembler.dailySalesDTO(saleData, salesEspeces, salesBonDeCommande, salesCheque, salesTicketRestaurant, salesCarteBancaire);
+	Application.getSaleService().saveSales(dto);
     }
 
     private void lockAllFieldsIfNeeded() {
@@ -604,39 +603,27 @@ public class DailySalesPanel extends JPanel implements Panel {
     }
 
     private boolean checkAreTableValid() {
-	// CB
-	for (String[] row : salesByCarteBancaire.getData()) {
-	    if (row[1] == null || !ValidatorUtils.validateIsNumericWithFrenchFormat(row[1])) {
-		return false;
-	    }
-	}
-	// Cheques
-	for (String[] row : salesByCheque.getData()) {
-	    if (row[1] == null || !ValidatorUtils.validateIsNumericWithFrenchFormat(row[1])) {
-		return false;
-	    }
-	}
+	boolean resultValidation = checkTableData(salesByCarteBancaire.getData()) && checkTableData(salesByCheque.getData())
+		&& checkTableData(salesByBonDeCommande.getData()) && checkTableData(salesByEspeces.getData());
+
 	// TR
 	for (String[] row : salesByTicketRestaurant.getData()) {
 	    if ((row[1] == null || !ValidatorUtils.validateIsNumericWithFrenchFormat(row[1])) || (row[2] == null || !ValidatorUtils.validateIsNumericWithFrenchFormat(row[2]))) {
 		return false;
 	    }
 	}
-	// Bons de commande
-	for (String[] row : salesByBonDeCommande.getData()) {
-	    if (row[1] == null || !ValidatorUtils.validateIsNumericWithFrenchFormat(row[1])) {
-		return false;
-	    }
-	}
-	// Especes
-	for (String[] row : salesByEspeces.getData()) {
+	return resultValidation;
+    }
+
+    private boolean checkTableData(List<String[]> data) {
+	for (String[] row : data) {
 	    if (row[1] == null || !ValidatorUtils.validateIsNumericWithFrenchFormat(row[1])) {
 		return false;
 	    }
 	}
 	return true;
     }
-
+    
     private boolean validateForm() {
 	List<JTextComponent> invalidComponents = UIUtils.checkIsNumeric(txtNbCouverts, txtAmountWith10PercentTaxes, txtAmountWith20PercentTaxes);
 	if (!invalidComponents.isEmpty()) {
@@ -654,8 +641,8 @@ public class DailySalesPanel extends JPanel implements Panel {
 
     // TODO Sortir dans une classe
     private void calculateValues() {
-	Double txtAmountWithout10Taxes = (DoubleUtils.stringToDouble(txtAmountWith10PercentTaxes.getText()) / 1.10);
-	Double txtAmountWithout20Taxes = (DoubleUtils.stringToDouble(txtAmountWith20PercentTaxes.getText()) / 1.20);
+	Double txtAmountWithout10Taxes = DoubleUtils.stringToDouble(txtAmountWith10PercentTaxes.getText()) / 1.10;
+	Double txtAmountWithout20Taxes = DoubleUtils.stringToDouble(txtAmountWith20PercentTaxes.getText()) / 1.20;
 
 	Double value = txtAmountWithout10Taxes + txtAmountWithout20Taxes;
 
@@ -684,18 +671,18 @@ public class DailySalesPanel extends JPanel implements Panel {
 
     // TODO Sortir dans une classe
     private void calculateDiffField(Double totalAmount) {
-	Double [] valuesToAdd = new Double[5];
-	
+	Double[] valuesToAdd = new Double[5];
+
 	valuesToAdd[0] = DoubleUtils.stringToDouble(txtTotalAmountCarteBancaire.getText());
 	valuesToAdd[1] = DoubleUtils.stringToDouble(txtTotalAmountCheque.getText());
 	valuesToAdd[2] = totalAmount;
 	valuesToAdd[3] = DoubleUtils.stringToDouble(txtTotalBonDeCommande.getText());
 	valuesToAdd[4] = DoubleUtils.stringToDouble(txtTotalAmountEspeces.getText());
-	
+
 	Double amountToSubstract = DoubleUtils.stringToDouble(txtAmountWithTaxes.getText());
-	
+
 	Double amountWithDiff = dailySalesService.diffAmount(valuesToAdd, amountToSubstract);
-	
+
 	txtAmountDifferencies.setText(DoubleUtils.doubleToString(amountWithDiff));
 	txtAmountDifferencies.setForeground(UIUtils.colorByAmount(amountWithDiff));
     }
@@ -707,7 +694,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 	    try {
 		row[3] = DoubleUtils.doubleToString(DoubleUtils.stringToDouble(row[1]) * DoubleUtils.stringToDouble(row[2]));
 	    } catch (Exception e) {
-		LOGGER.debug("Error on compute");
+		LOGGER.debug("Error on compute", e);
 	    }
 	}
 	salesByTicketRestaurant.fireTableDataChanged();
@@ -716,14 +703,14 @@ public class DailySalesPanel extends JPanel implements Panel {
 	    try {
 		row[3] = DoubleUtils.doubleToString(DoubleUtils.stringToDouble(row[1]) * DoubleUtils.stringToDouble(row[2]));
 	    } catch (Exception e) {
-		LOGGER.debug("Error on compute");
+		LOGGER.debug("Error on compute", e);
 	    }
 	}
 	salesByEspeces.fireTableDataChanged();
     }
 
     private boolean processValidation(String password) throws CaisseException {
-	String encryptedAdminPassword = ApplicationManager.getUserService().findAdminPassword();
+	String encryptedAdminPassword = Application.getUserService().findAdminPassword();
 	if (CryptoUtils.getMD5EncryptedPassword(password).equals(encryptedAdminPassword)) {
 	    processLockOrUnLockScreen();
 	    return true;
@@ -736,7 +723,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 	if (!dailySalesDTO.getSaleData().isLocked()) {
 	    isPanelLocked = true;
 	    dailySalesDTO.getSaleData().setLocked(isPanelLocked);
-	    ApplicationManager.getSaleService().updateSaleData(dailySalesDTO);
+	    Application.getSaleService().updateSaleData(dailySalesDTO);
 	    lockAllFieldsIfNeeded();
 	    LOGGER.debug("Sales for {} - Server {} => Locked", dateOperation, server);
 	} else {
@@ -745,7 +732,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 	    unlockAllFields();
 	    LOGGER.debug("Sales for {} - Server {} => Unlocked", dateOperation, server);
 	}
-	ApplicationManager.getSaleService().updateSaleData(dailySalesDTO);
+	Application.getSaleService().updateSaleData(dailySalesDTO);
     }
 
     private void resetColor(JTextComponent... components) {

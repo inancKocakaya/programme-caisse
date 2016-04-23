@@ -14,13 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "SALE_DETAILS")
 public class Sale implements Serializable {
@@ -29,19 +22,76 @@ public class Sale implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name = "ID")
     private Integer id;
+
     @Column(name = "DATE_OPERATION")
     @Temporal(TemporalType.DATE)
     private Date dateOperation;
+
     @Column(name = "QTY")
     private Integer quantity;
+
     @Column(name = "AMOUNT")
     private double amount;
+
     @JoinColumn(name = "PAYMENT_TYPE_ID", nullable = false)
     @ManyToOne
     private MoneyType paymentType;
+
     @JoinColumn(name = "SERVER_ID", nullable = false)
     @ManyToOne
     private Server server;
+
+    public Sale() {
+	super();
+    }
+
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
+    public Date getDateOperation() {
+	return dateOperation;
+    }
+
+    public void setDateOperation(Date dateOperation) {
+	this.dateOperation = dateOperation;
+    }
+
+    public Integer getQuantity() {
+	return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+	this.quantity = quantity;
+    }
+
+    public double getAmount() {
+	return amount;
+    }
+
+    public void setAmount(double amount) {
+	this.amount = amount;
+    }
+
+    public MoneyType getPaymentType() {
+	return paymentType;
+    }
+
+    public void setPaymentType(MoneyType paymentType) {
+	this.paymentType = paymentType;
+    }
+
+    public Server getServer() {
+	return server;
+    }
+
+    public void setServer(Server server) {
+	this.server = server;
+    }
 }

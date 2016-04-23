@@ -7,14 +7,14 @@ import org.kocakaya.caisse.dao.CaisseDao;
 import org.kocakaya.caisse.service.ServerService;
 import org.kocakaya.caisse.service.dto.ServerDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class DatabaseServerService implements ServerService {
 
     private CaisseDao caisseDao;
+
+    public DatabaseServerService(CaisseDao caisseDao) {
+	super();
+	this.caisseDao = caisseDao;
+    }
 
     @Override
     public void saveServer(ServerDTO serverDTO) {

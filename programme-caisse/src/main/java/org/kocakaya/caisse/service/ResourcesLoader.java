@@ -21,7 +21,7 @@ public class ResourcesLoader {
 	return instance;
     }
 
-    public void setResourceBundleLocale(Locale locale) {
+    public static void setResourceBundleLocale(Locale locale) {
 	resourceBundle = ResourceBundle.getBundle(RESOURCE_NAME, locale);
     }
 

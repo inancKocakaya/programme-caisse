@@ -8,9 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class StateMessageLabelBuilder {
 
     private JLabel label = new JLabel();

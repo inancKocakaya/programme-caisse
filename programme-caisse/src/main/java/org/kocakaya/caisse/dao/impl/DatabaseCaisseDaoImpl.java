@@ -39,7 +39,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    users = query.getResultList();
 	} catch (NoResultException e) {
-	    LOGGER.debug("No users found");
+	    LOGGER.debug(e.getMessage());
 	}
 	em.close();
 	return users;
@@ -54,7 +54,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    moneyTypes = query.getResultList();
 	} catch (NoResultException e) {
-	    LOGGER.debug("No money types found");
+	    LOGGER.debug(e.getMessage());
 	}
 	em.close();
 	return moneyTypes;
@@ -110,7 +110,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    managedSaleData = query.getSingleResult();
 	} catch (NoResultException e) {
-	    LOGGER.debug("No sale data found");
+	    LOGGER.debug(e.getMessage());
 	}
 	em.close();
 	return managedSaleData;
@@ -200,7 +200,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    managedUser = query.getSingleResult();
 	} catch (NoResultException e) {
-	    LOGGER.debug("No user found");
+	    LOGGER.debug(e.getMessage());
 	}
 	if (managedUser != null) {
 	    managedUser.getRoles();
@@ -221,7 +221,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    managedUser = query.getSingleResult();
 	} catch (NoResultException e) {
-	    LOGGER.debug("No user found");
+	    LOGGER.debug(e.getMessage());
 	}
 	LOGGER.info("User found {}", managedUser);
 	em.close();
@@ -354,6 +354,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    cbRecolte = query.getSingleResult();
 	} catch (NoResultException e) {
+	    LOGGER.debug(e.getMessage());
 	    cbRecolte = new CbRecolte();
 	    cbRecolte.setAmount(0);
 	    cbRecolte.setDateOperation(dateOperation);
@@ -403,7 +404,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 
     @Override
     public List<String> usersLogin() {
-	List<String> usersLogin = new ArrayList<>();
+	List<String> usersLogin;
 	LOGGER.info("Retrieve all users");
 	EntityManager em = emf.createEntityManager();
 	String query = "SELECT u.name FROM User u";

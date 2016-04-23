@@ -40,7 +40,7 @@ public class WelcomePanel extends JPanel implements Panel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WelcomePanel.class);
 
-    private ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
+    private static ResourceBundle resourceBundle = ResourcesLoader.getInstance().getResourceBundle();
 
     String messageFailConnection = resourceBundle.getString("programme.caisse.fail.connection.lbl");
     String messageFailMissingData = resourceBundle.getString("programme.caisse.fail.missing.data.lbl");
@@ -64,6 +64,7 @@ public class WelcomePanel extends JPanel implements Panel {
     JButton btnClear;
 
     public WelcomePanel() {
+	super();
     }
 
     @Override
@@ -91,7 +92,7 @@ public class WelcomePanel extends JPanel implements Panel {
 	try {
 	    imageLogo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo-au-bureau.jpg"));
 	} catch (IOException e) {
-	    LOGGER.error(e.getMessage());
+	    LOGGER.error("Error on getting image", e);
 	}
 
 	lblImage = new JLabel(new ImageIcon(imageLogo));
@@ -128,8 +129,8 @@ public class WelcomePanel extends JPanel implements Panel {
     }
 
     private String[] users() {
-	List<String> users = ApplicationManager.getUserService().usersLogin();
-	return users.toArray(new String[users.size()]);
+	List<String> usersList = Application.getUserService().usersLogin();
+	return usersList.toArray(new String[usersList.size()]);
     }
 
     private void initButtons() {
@@ -176,18 +177,18 @@ public class WelcomePanel extends JPanel implements Panel {
 		    userLogin = users.getSelectedItem().toString();
 		}
 		UserDTO userDTO = UserDTOAssembler.userDTO(userLogin, encryptedPassword);
-		UserDTO managedUserDTO = ApplicationManager.getUserService().findUserWithRoles(userDTO);
+		UserDTO managedUserDTO = Application.getUserService().findUserWithRoles(userDTO);
 		if (managedUserDTO.getUser() != null) {
-		    ApplicationManager.setConnectedUser(managedUserDTO);
+		    Application.setConnectedUser(managedUserDTO);
 		    LOGGER.info("User {} connected ", managedUserDTO.getUser().getName());
-		    ApplicationManager.changePanel(new MainMenuPanel().get());
+		    Application.changePanel(new MainMenuPanel().get());
 
 		} else {
 		    StateMessageLabelBuilder.create().withLabel(lblMessage).withText(messageFailConnection).withVisibilty(true).withState(MessageType.FAIL).withVisibilityInSeconds(2_500).start();
 		    LOGGER.debug("User {} cannot be authenticated ", userDTO.getUser().getName());
 		}
 	    } catch (CaisseException e) {
-		LOGGER.error(e.getMessage());
+		LOGGER.error("Error on getting password", e);
 	    }
 	}
     }

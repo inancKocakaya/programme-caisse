@@ -7,9 +7,6 @@ import java.util.List;
 import org.kocakaya.caisse.utils.DateUtils;
 import org.kocakaya.caisse.utils.DoubleUtils;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class StatsService {
 
     public List<String[]> cumulCBData() {

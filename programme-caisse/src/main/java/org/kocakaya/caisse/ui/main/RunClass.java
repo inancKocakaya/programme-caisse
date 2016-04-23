@@ -6,10 +6,8 @@ import java.util.Date;
 
 import org.kocakaya.caisse.dao.CaisseDao;
 import org.kocakaya.caisse.service.DaoType;
-import org.kocakaya.caisse.service.SaleService;
 import org.kocakaya.caisse.service.ServiceFactory;
-import org.kocakaya.caisse.service.UserService;
-import org.kocakaya.caisse.ui.frame.ApplicationManager;
+import org.kocakaya.caisse.ui.frame.Application;
 import org.kocakaya.caisse.ui.frame.CaisseFrame;
 import org.kocakaya.caisse.utils.DatabaseUtils;
 import org.slf4j.Logger;
@@ -23,22 +21,16 @@ public class RunClass {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RunClass.class);
 
-    public UserService userService;
-    public SaleService saleService;
-
-    public RunClass() {
-    }
-
     public void initApplication(DaoType daoType) throws ClassNotFoundException, SQLException {
 	initLogger("conf/logback.xml");
-	ApplicationManager.setUserService(ServiceFactory.getUserService(daoType));
-	ApplicationManager.setSaleService(ServiceFactory.getSaleService(daoType));
+	Application.setUserService(ServiceFactory.getUserService(daoType));
+	Application.setSaleService(ServiceFactory.getSaleService(daoType));
 	checkDatabaseState();
-	ApplicationManager.setFrame(new CaisseFrame());
+	Application.setFrame(new CaisseFrame());
     }
 
     private void checkDatabaseState() throws ClassNotFoundException, SQLException {
-	CaisseDao caisseDao = ApplicationManager.getUserService().caisseDao();
+	CaisseDao caisseDao = Application.getUserService().caisseDao();
 	DatabaseUtils databaseUtils = new DatabaseUtils(caisseDao);
 	databaseUtils.init();
     }
@@ -51,8 +43,7 @@ public class RunClass {
 	    lc.reset();
 	    configurator.doConfigure(fileName);
 	} catch (JoranException je) {
-	    LOGGER.error("Error on initialization of logger");
-	    je.printStackTrace();
+	    LOGGER.error("Error on logger initialization", je);
 	}
 	LOGGER.debug("Logger initialized from : {}", fileName);
     }
@@ -61,17 +52,18 @@ public class RunClass {
 
 	EventQueue.invokeLater(new Runnable() {
 
+	    @Override
 	    public void run() {
 		try {
 		    LOGGER.info("Application started at {}", new Date());
 		    RunClass runClass = new RunClass();
 		    runClass.initApplication(DaoType.DATABASE);
 		} catch (ClassNotFoundException e) {
-		    LOGGER.error(e.getMessage());
+		    LOGGER.error("Class not found exception", e);
 		} catch (SQLException e) {
-		    LOGGER.error(e.getMessage());
+		    LOGGER.error("SQL exception", e);
 		} catch (Exception e) {
-		    LOGGER.error(e.getMessage());
+		    LOGGER.error("Unknown error", e);
 		    System.exit(0);
 		}
 	    }

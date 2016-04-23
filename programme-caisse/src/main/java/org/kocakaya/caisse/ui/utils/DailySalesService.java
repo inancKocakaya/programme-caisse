@@ -13,11 +13,6 @@ import org.kocakaya.caisse.ui.component.MyDefaultModelTable;
 import org.kocakaya.caisse.utils.DoubleUtils;
 import org.kocakaya.caisse.utils.EspecesUtils;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 public class DailySalesService {
 
     private Date dateOperation;
@@ -188,7 +183,7 @@ public class DailySalesService {
 	    row[2] = DoubleUtils.doubleToString(sale.getAmount());
 	    data.add(row);
 	}
-	if (data.size() == 0) {
+	if (data.isEmpty()) {
 	    return defaultDataForEspecesTable();
 	}
 	return data;
@@ -226,8 +221,8 @@ public class DailySalesService {
 
     public Double diffAmount(Double[] valuesToAdd, Double amountToSubstract) {
 	Double sumAmount = 0d;
-	
-	for (Double val : valuesToAdd){
+
+	for (Double val : valuesToAdd) {
 	    sumAmount += val;
 	}
 	return sumAmount - amountToSubstract;

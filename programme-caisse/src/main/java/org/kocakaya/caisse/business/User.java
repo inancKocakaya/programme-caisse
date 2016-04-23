@@ -13,13 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
@@ -30,13 +23,20 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+
     @Column(name = "NAME")
     private String name;
+
     @Column(name = "PASSWORD")
     private String password;
+
     @ManyToMany
     @JoinTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID") })
     private List<Role> roles;
+
+    public User() {
+	super();
+    }
 
     public User(Integer id, String name, String password) {
 	this.id = id;
@@ -48,4 +48,37 @@ public class User implements Serializable {
 	this.name = name;
 	this.password = password;
     }
+
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    public String getPassword() {
+	return password;
+    }
+
+    public void setPassword(String password) {
+	this.password = password;
+    }
+
+    public List<Role> getRoles() {
+	return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+	this.roles = roles;
+    }
+
 }

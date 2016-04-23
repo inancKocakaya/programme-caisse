@@ -4,19 +4,20 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-@AllArgsConstructor
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class MyDefaultModelTableCumulCB extends AbstractTableModel {
 
     private static final long serialVersionUID = 1L;
 
-    protected List<String[]> data;
+    private List<String[]> data;
     protected String[] columnsName;
+
+    public MyDefaultModelTableCumulCB(List<String[]> data, String[] columnsName) {
+	super();
+	this.data = data;
+	this.columnsName = columnsName;
+    }
+    
+    
 
     @Override
     public int getColumnCount() {
@@ -28,13 +29,14 @@ public class MyDefaultModelTableCumulCB extends AbstractTableModel {
 	return data.get(row)[column];
     }
 
+    @Override
     public int getRowCount() {
 	return data.size();
     }
 
     @Override
     public String getColumnName(int col) {
-	return columnsName[col].toString();
+	return columnsName[col];
     }
 
     @Override

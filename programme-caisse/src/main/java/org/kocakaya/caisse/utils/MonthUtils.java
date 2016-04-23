@@ -22,6 +22,9 @@ public class MonthUtils {
 	FR_MONTH_NAME_BY_INDEX.put(12, "Décembre");
     }
 
+    private MonthUtils(){
+    }
+    
     public static String getFrenchMonthNameByIndex(int monthIndex) {
 	return FR_MONTH_NAME_BY_INDEX.get(monthIndex);
     }

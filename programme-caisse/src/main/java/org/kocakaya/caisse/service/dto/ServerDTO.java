@@ -22,5 +22,4 @@ public class ServerDTO {
     public void setServer(Server server) {
 	this.server = server;
     }
-
 }

@@ -18,9 +18,9 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import org.kocakaya.caisse.business.Server;
+import org.kocakaya.caisse.mapper.ObjectMapper;
 import org.kocakaya.caisse.service.ResourcesLoader;
 import org.kocakaya.caisse.service.dto.ServerDTO;
-import org.kocakaya.caisse.ui.assembler.ServerDTOAssembler;
 import org.kocakaya.caisse.ui.component.MyDefaultModelTable;
 import org.kocakaya.caisse.ui.utils.MessageType;
 import org.kocakaya.caisse.ui.utils.StateMessageLabelBuilder;
@@ -46,7 +46,7 @@ public class ServerPanel extends JPanel implements Panel {
     String messageFailMissingData = resourceBundle.getString("programme.caisse.fail.missing.data.lbl");
     String messageFailAlreadyExistsServer = resourceBundle.getString("programme.caisse.fail.duplicated.save.lbl");
     String messageSuccessUpdate = resourceBundle.getString("programme.caisse.fail.update.lbl");
-    
+
     String title = resourceBundle.getString("programme.caisse.servers.mngt.lbl");
 
     JLabel lblTitle;
@@ -74,7 +74,7 @@ public class ServerPanel extends JPanel implements Panel {
 
     @Override
     public JPanel get() {
-	
+
 	lblTitle = TitleMessageBuilder.create().withText(title).withTextToUpperCase().get();
 
 	lblMessage = StateMessageLabelBuilder.create().get();
@@ -112,7 +112,7 @@ public class ServerPanel extends JPanel implements Panel {
 
 	ImageIcon imageUpdate = new ImageIcon(getClass().getClassLoader().getResource("update.png"));
 	btnUpdateUsers = new JButton(resourceBundle.getString("programme.caisse.updateusers.lbl"), imageUpdate);
-	
+
 	String columns = "150dlu, pref, pref, 25dlu, pref, 10dlu, pref, 25dlu, pref, pref, pref";
 	String rows = "35dlu, 5dlu, 10dlu, 30dlu, pref, pref, 10dlu, pref, pref";
 
@@ -190,25 +190,16 @@ public class ServerPanel extends JPanel implements Panel {
 	    for (JTextComponent currentComponent : emptyComponents) {
 		currentComponent.setBackground(Color.PINK);
 	    }
-	    StateMessageLabelBuilder.create().withLabel(lblMessage)
-	    	.withText(messageFailMissingData)
-	    	.withVisibilty(true)
-	    	.withState(MessageType.FAIL)
-	    	.withVisibilityInSeconds(2_000).start();
-	    
+	    StateMessageLabelBuilder.create().withLabel(lblMessage).withText(messageFailMissingData).withVisibilty(true).withState(MessageType.FAIL).withVisibilityInSeconds(2_000).start();
+
 	    LOGGER.debug("Missing data, server cannot be created");
 	} else {
-	    // TODO Dozer
-	    ServerDTO serverDTO = ServerDTOAssembler.serverDTO(txtLastName.getText(), txtFirstname.getText());
+	    ServerDTO serverDTO = ObjectMapper.serverDTO(txtLastName.getText(), txtFirstname.getText());
 	    Application.getServerService().saveServer(serverDTO);
 	    LOGGER.info("Server : {}-{} created", serverDTO.getServer().getLastName(), serverDTO.getServer().getFirstName());
-	    
-	    StateMessageLabelBuilder.create().withLabel(lblMessage)
-	    	.withText(messageSuccessSave)
-	    	.withVisibilty(true)
-	    	.withState(MessageType.SUCCESS)
-	    	.withVisibilityInSeconds(2_000).start();
-	    
+
+	    StateMessageLabelBuilder.create().withLabel(lblMessage).withText(messageSuccessSave).withVisibilty(true).withState(MessageType.SUCCESS).withVisibilityInSeconds(2_000).start();
+
 	    resetValue(txtFirstname, txtLastName);
 	    servers.setData(getServersAsTable());
 	    LOGGER.debug("Servers table updated successfully");
@@ -216,7 +207,6 @@ public class ServerPanel extends JPanel implements Panel {
     }
 
     private void manageServersUpdate() {
-	// TODO Dozer
 	for (String[] row : servers.getData()) {
 	    Server server = new Server();
 	    server.setId(Integer.parseInt(row[0]));
@@ -225,12 +215,8 @@ public class ServerPanel extends JPanel implements Panel {
 	    ServerDTO serverDTO = new ServerDTO(server);
 	    Application.getServerService().updateServer(serverDTO);
 	    LOGGER.debug("Server : {}-{} updated", row[1], row[2]);
-	    
-	    StateMessageLabelBuilder.create().withLabel(lblMessage)
-	    	.withText(messageSuccessUpdate)
-	    	.withVisibilty(true)
-	    	.withState(MessageType.SUCCESS)
-	    	.withVisibilityInSeconds(2_000).start();
+
+	    StateMessageLabelBuilder.create().withLabel(lblMessage).withText(messageSuccessUpdate).withVisibilty(true).withState(MessageType.SUCCESS).withVisibilityInSeconds(2_000).start();
 	}
     }
 

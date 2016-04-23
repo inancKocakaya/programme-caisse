@@ -51,7 +51,7 @@ public class DatabaseUtils {
 		initOtherData(connection);
 	    }
 	} catch (Exception e) {
-	    LOGGER.error(e.getMessage());
+	    LOGGER.error("Error on db initialization", e);
 	} finally {
 	    if (connection != null) {
 		connection.close();
@@ -111,7 +111,7 @@ public class DatabaseUtils {
 	    RunScript.execute(connection, new FileReader(insertFile));
 	    LOGGER.info("Data inserted from {}", insertFile);
 	} catch (Exception e) {
-	    LOGGER.error(e.getMessage());
+	    LOGGER.error("Error on data insertion", e);
 	    System.exit(0);
 	}
     }

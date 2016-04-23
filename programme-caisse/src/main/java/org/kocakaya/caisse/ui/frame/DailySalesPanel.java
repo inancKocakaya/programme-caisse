@@ -25,9 +25,9 @@ import org.kocakaya.caisse.business.SaleData;
 import org.kocakaya.caisse.business.SaleId;
 import org.kocakaya.caisse.business.Server;
 import org.kocakaya.caisse.exception.CaisseException;
+import org.kocakaya.caisse.mapper.ObjectMapper;
 import org.kocakaya.caisse.service.ResourcesLoader;
 import org.kocakaya.caisse.service.dto.DailySalesDTO;
-import org.kocakaya.caisse.ui.assembler.DailySalesDTOAssembler;
 import org.kocakaya.caisse.ui.component.MyDefaultModelTable;
 import org.kocakaya.caisse.ui.component.MySalesTable;
 import org.kocakaya.caisse.ui.utils.DailySalesService;
@@ -530,7 +530,6 @@ public class DailySalesPanel extends JPanel implements Panel {
     }
 
     private void saveOrUpdateData() {
-	// TODO Dozer
 	SaleData saleData = new SaleData();
 	saleData.setId(new SaleId(dateOperation, server.getId()));
 	saleData.setLocked(false);
@@ -543,7 +542,7 @@ public class DailySalesPanel extends JPanel implements Panel {
 	saleData.setAmount10Taxes(DoubleUtils.stringToDouble(txtAmountWith10PercentTaxes.getText()));
 	saleData.setAmount20Taxes(DoubleUtils.stringToDouble(txtAmountWith20PercentTaxes.getText()));
 
-	DailySalesDTO dto = DailySalesDTOAssembler.dailySalesDTO(saleData, salesEspeces, salesBonDeCommande, salesCheque, salesTicketRestaurant, salesCarteBancaire);
+	DailySalesDTO dto = ObjectMapper.dailySalesDTO(saleData, salesEspeces, salesBonDeCommande, salesCheque, salesTicketRestaurant, salesCarteBancaire);
 	Application.getSaleService().saveSales(dto);
     }
 

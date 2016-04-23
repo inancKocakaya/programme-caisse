@@ -9,18 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Builder;
-
-@Builder(builderMethodName = "create", buildMethodName = "get")
 @Entity
 @Table(name = "ROLE")
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final Role ROLE_ADMIN = Role.create().id(1).name("ADMIN").description("ADMIN").get();
-    public static final Role ROLE_SAISIE = Role.create().id(2).name("SAISIE").description("SAISIE CAISSE").get();
-    public static final Role ROLE_VISU_TR = Role.create().id(3).name("VISU_TR").description("VISUALISATION TR").get();
+    public static final Role ROLE_ADMIN = new Role(1, "ADMIN", "ADMIN");
+    public static final Role ROLE_SAISIE = new Role(2, "SAISIE", "SAISIE CAISSE");
+    public static final Role ROLE_VISU_TR = new Role(3, "VISU_TR", "VISUALISATION TR");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

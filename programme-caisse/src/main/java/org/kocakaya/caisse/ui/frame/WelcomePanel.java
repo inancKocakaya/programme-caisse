@@ -18,9 +18,9 @@ import javax.swing.JPasswordField;
 import javax.swing.text.JTextComponent;
 
 import org.kocakaya.caisse.exception.CaisseException;
+import org.kocakaya.caisse.mapper.ObjectMapper;
 import org.kocakaya.caisse.service.ResourcesLoader;
 import org.kocakaya.caisse.service.dto.UserDTO;
-import org.kocakaya.caisse.ui.assembler.UserDTOAssembler;
 import org.kocakaya.caisse.ui.utils.MessageType;
 import org.kocakaya.caisse.ui.utils.StateMessageLabelBuilder;
 import org.kocakaya.caisse.ui.utils.TitleMessageBuilder;
@@ -176,7 +176,7 @@ public class WelcomePanel extends JPanel implements Panel {
 		if (users.getSelectedItem() != null) {
 		    userLogin = users.getSelectedItem().toString();
 		}
-		UserDTO userDTO = UserDTOAssembler.userDTO(userLogin, encryptedPassword);
+		UserDTO userDTO = ObjectMapper.userDTO(userLogin, encryptedPassword);
 		UserDTO managedUserDTO = Application.getUserService().findUserWithRoles(userDTO);
 		if (managedUserDTO.getUser() != null) {
 		    Application.setConnectedUser(managedUserDTO);

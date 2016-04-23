@@ -221,7 +221,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    managedUser = query.getSingleResult();
 	} catch (NoResultException e) {
-	    LOGGER.debug(e.getMessage());
+	    LOGGER.debug("No result found", e);
 	}
 	LOGGER.info("User found {}", managedUser);
 	em.close();
@@ -354,7 +354,7 @@ public class DatabaseCaisseDaoImpl implements CaisseDao {
 	try {
 	    cbRecolte = query.getSingleResult();
 	} catch (NoResultException e) {
-	    LOGGER.debug(e.getMessage());
+	    LOGGER.debug("No result found", e);
 	    cbRecolte = new CbRecolte();
 	    cbRecolte.setAmount(0);
 	    cbRecolte.setDateOperation(dateOperation);

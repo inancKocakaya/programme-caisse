@@ -7,21 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Builder;
-
 @Entity
-@Builder(builderMethodName = "create", buildMethodName = "get")
 @Table(name = "MONEY_TYPE")
 public class MoneyType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final MoneyType ESPECES = MoneyType.create().code("ESPECES").get();
-    public static final MoneyType CHEQUE_BANCAIRE = MoneyType.create().code("CHEQUE_BANCAIRE").get();
-    public static final MoneyType TICKET_RESTAURANT = MoneyType.create().code("TICKET_RESTAURANT").get();
-    public static final MoneyType BON_COMMANDE = MoneyType.create().code("BON_COMMANDE").get();
-    public static final MoneyType CARTE_BANCAIRE = MoneyType.create().code("CARTE_BANCAIRE").get();
-    public static final MoneyType ALL = MoneyType.create().code("ALL").get();
+    public static final MoneyType ESPECES = new MoneyType("ESPECES", "ESPECES");
+    public static final MoneyType CHEQUE_BANCAIRE = new MoneyType("CHEQUE_BANCAIRE", "CHEQUE_BANCAIRE");
+    public static final MoneyType TICKET_RESTAURANT = new MoneyType("TICKET_RESTAURANT", "TICKET_RESTAURANT");
+    public static final MoneyType BON_COMMANDE = new MoneyType("BON_COMMANDE", "BON_COMMANDE");
+    public static final MoneyType CARTE_BANCAIRE = new MoneyType("CARTE_BANCAIRE", "CARTE_BANCAIRE");
+    public static final MoneyType ALL = new MoneyType("ALL", "ALL");
 
     @Id
     @Column(name = "CODE", nullable = false)
